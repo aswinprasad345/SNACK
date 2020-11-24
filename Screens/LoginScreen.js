@@ -3,6 +3,7 @@ import { StyleSheet, Text, View , TextInput , TouchableOpacity, Alert , Modal , 
 import db from '../Config.js';
 import firebase from 'firebase';
 import  { ScrollView } from 'react-native-gesture-handler';
+// import SantaView from '../components/lottieView.js';
 
 export default class loginScreen extends React.Component{
 
@@ -118,14 +119,18 @@ export default class loginScreen extends React.Component{
 
  render(){
     return(
-        <View>
+        <View style={styles.container}>
           {this.showModal()}
-          <TextInput placeholder="e-mail" style={styles.textInput} onChangeText={(text)=>{
-            this.setState({email:text})
-          }}/>
-          <TextInput placeholder="password" style={styles.textInput} onChangeText={(text)=>{
-            this.setState({password:text})
-          }}/>
+          <View style={styles.inputView}>
+            <TextInput placeholder="e-mail" style={styles.textInput} onChangeText={(text)=>{
+              this.setState({email:text})
+            }}/>
+          </View>
+          <View style={styles.inputView}>
+            <TextInput placeholder="password" style={styles.textInput} onChangeText={(text)=>{
+              this.setState({password:text})
+            }}/>
+          </View>
           <TouchableOpacity style={styles.saveButton} onPress={this.loginButton}>
               <Text style={styles.buttonText}>LOGIN</Text>
             </TouchableOpacity> 
@@ -167,5 +172,22 @@ const styles=StyleSheet.create({
         marginLeft : 30, 
         marginTop:80, 
         marginBottom:80, 
-      }
+      },
+      container: {
+        flex: 1, 
+        backgroundColor: '#fff', 
+        alignItems: 'center', 
+        justifyContent: 'center', 
+      }, 
+      inputView:{ 
+        marginTop:10, 
+        backgroundColor:"rgba(11,11,11,0.1)" 
+      }, 
+      submitButton:{ 
+        backgroundColor:"red" , 
+        justifyContent:"center", 
+        padding:10, 
+        marginTop:20, 
+        marginLeft:0 
+      },
 })

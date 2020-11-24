@@ -1,4 +1,4 @@
-import * as react from 'react';
+import * as React from 'react';
 import { Text , View , StyleSheet } from 'react-native';
 
 export default class AppHeader extends React.Component{

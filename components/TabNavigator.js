@@ -6,14 +6,14 @@ import Donate from '../Screens/Donate';
 
 export const TabNavigator = createBottomTabNavigator({
     Req:{
-        Screen:Request,
+        screen:Request,
         navigationOptions:{
             TabBarIcon:<Image source={require("../assets/request-book.png")} style={{width:40,height:40}}/>,
             TabBarLabel:"Request Books"
         }
     },
     Don:{
-        Screen:Donate,
+        screen:Donate,
         navigationOptions:{
             TabBarIcon:<Image source={require("../assets/request-list.png")} style={{width:40,height:40}}/>,
             TabBarLabel:"Donate Books"
