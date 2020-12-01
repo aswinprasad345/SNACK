@@ -7,9 +7,7 @@ import { createAppContainer , createSwitchNavigator } from 'react-navigation';
 export default class App extends React.Component{
   render(){
     return(
-      <View>
-        
-      </View>
+        <AppContainer/>
     )
   }
 }

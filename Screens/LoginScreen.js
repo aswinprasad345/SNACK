@@ -103,7 +103,7 @@ export default class loginScreen extends React.Component{
         .auth()
         .signInWithEmailAndPassword(this.state.email,this.state.password)
         if(response){
-            this.props.navigation.navigate('RequetScreen')
+            this.props.navigation.navigate('Req')
         }
       }
       catch(error){
@@ -120,7 +120,10 @@ export default class loginScreen extends React.Component{
  render(){
     return(
         <View style={styles.container}>
-          {this.showModal()}
+          {/* {this.showModal()} */}
+          {/* <View>
+            <SantaView/>
+          </View> */}
           <View style={styles.inputView}>
             <TextInput placeholder="e-mail" style={styles.textInput} onChangeText={(text)=>{
               this.setState({email:text})
@@ -141,12 +144,11 @@ export default class loginScreen extends React.Component{
 
 const styles=StyleSheet.create({
     textInput : {
-        marginTop:30, 
         backgroundColor:"rgba(11,11,11,0.1)",
         borderRadius:15,
         borderColor:"black",
         width:200,
-        marginLeft:75
+        justifyContent:"center",
       },
       buttonText : {
         textAlign : 'center',
@@ -174,7 +176,7 @@ const styles=StyleSheet.create({
         marginBottom:80, 
       },
       container: {
-        flex: 1, 
+        flex:1,
         backgroundColor: '#fff', 
         alignItems: 'center', 
         justifyContent: 'center', 

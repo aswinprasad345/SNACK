@@ -6,6 +6,7 @@ import * as firebase from 'firebase';
 
 export default class Request extends React.Component{
     constructor(){
+        super();
         this.state = {
             book:'',
             reason:'',
@@ -21,10 +22,13 @@ export default class Request extends React.Component{
               "reason":this.state.reason,
               "userID":this.state.userID
     })
+    console.log("************************")
     }
     render(){
         return(
-            <View>
+            <View style={{
+                flex:1
+            }}>
                 <AppHeader titles="Request-Books"/>
                 <KeyboardAvoidingView style={styles.keyBoardStyle}>
                     <TextInput placeholder="book" value={this.state.book} onChangeText={(text)=>{
