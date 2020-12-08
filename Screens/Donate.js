@@ -3,6 +3,7 @@ import { Text, View, StyleSheet , FlatList } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import db from '../Config.js';
 import AppHeader from '../components/myHeader';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default class Request extends React.Component{
     constructor(){
@@ -29,24 +30,48 @@ export default class Request extends React.Component{
     render(){
         return(
             <View>
-                <AppHeader titles="Donate-Books"/>
+                <AppHeader titles="Donate-Books" navigation={this.props.navigation}/>
                 <FlatList 
                 data = {this.state.requestList}
                 renderItem={({item,i})=>(
-                    console.log(item.i)
-                    // <ListItem
-                    // key={i}
-                    // />
-                    // <View>
-                        // <Text>{"bookname : " + item["book name"]}</Text>
-                        // <Text>{"fulfilled : " + item.fulfilled }</Text>
-                        // <Text>{"other : " + item.other}</Text>
-                        // <Text>{"reason : " + item.reason}</Text>
-                        // <Text>{"userID : " + item.userID}</Text>
-                    // </View>
+                    <ListItem
+                    key={i}
+                    title={item["book name"]}
+                    subtitle={item.reason}
+                    titleStyle={{
+                        color:"black",
+                        fontWeight:"bold"
+                    }}
+                    rightElement={
+                        <TouchableOpacity style={styles.button}>
+                            <Text style={{color:"white"}}>View</Text>
+                        </TouchableOpacity>
+                    }
+                    />
                 )}
                 />
             </View>
         )
     }
 }
+
+const styles = StyleSheet.create({
+    subContainer:{
+        flex:1, 
+        fontSize: 20, 
+        justifyContent:'center', 
+        alignItems:'center' 
+    }, 
+    button:{ 
+        width:100, 
+        height:30, 
+        justifyContent:'center', 
+        alignItems:'center', 
+        backgroundColor:"#ff5722", 
+        shadowColor: "#000", 
+        shadowOffset: { 
+            width: 0, 
+            height: 8 
+        } 
+    } 
+})

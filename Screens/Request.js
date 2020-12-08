@@ -29,7 +29,7 @@ export default class Request extends React.Component{
             <View style={{
                 flex:1
             }}>
-                <AppHeader titles="Request-Books"/>
+                <AppHeader titles="Request-Books" navigation={this.props.navigation}/>
                 <KeyboardAvoidingView style={styles.keyBoardStyle}>
                     <TextInput placeholder="book" value={this.state.book} onChangeText={(text)=>{
                         this.setState({book:text})

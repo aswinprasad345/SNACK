@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Text, View, StyleSheet , TextInput , KeyboardAvoidingView } from 'react-native';
 import db from '../Config.js';
 import firebase from 'firebase';
+import AppHeader from '../components/myHeader'
 import  { ScrollView } from 'react-native-gesture-handler';
 
 export default class Settings extends React.Component{
@@ -34,6 +35,7 @@ export default class Settings extends React.Component{
     render(){
         return(
             <View>
+                <AppHeader titles="Settings" navigation={this.props.navigation}/>
                 <ScrollView style={{
                     width:"100%"
                     }}>
