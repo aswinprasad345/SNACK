@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Image } from 'react-native';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import Request from '../Screens/Request';
-import Donate from '../Screens/Donate';
+import { StackNav } from './AppStackNav.js';
 
 export const TabNavigator = createBottomTabNavigator({
     Req:{
@@ -13,7 +13,7 @@ export const TabNavigator = createBottomTabNavigator({
         }
     },
     Don:{
-        screen:Donate,
+        screen:StackNav,
         navigationOptions:{
             TabBarIcon:<Image source={require("../assets/request-list.png")} style={{width:40,height:40}}/>,
             TabBarLabel:"Donate Books"

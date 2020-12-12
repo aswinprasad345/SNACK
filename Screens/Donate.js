@@ -5,7 +5,7 @@ import db from '../Config.js';
 import AppHeader from '../components/myHeader';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-export default class Request extends React.Component{
+export default class Donate extends React.Component{
     constructor(){
         super();
         this.state = {
@@ -43,7 +43,10 @@ export default class Request extends React.Component{
                         fontWeight:"bold"
                     }}
                     rightElement={
-                        <TouchableOpacity style={styles.button}>
+                        <TouchableOpacity style={styles.button} onPress={()=>{
+                            console.log('book')
+                            this.props.navigation.navigate('Rec');
+                        }}>
                             <Text style={{color:"white"}}>View</Text>
                         </TouchableOpacity>
                     }
