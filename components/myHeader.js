@@ -11,6 +11,7 @@ export default class AppHeader extends React.Component{
     render(){
         return(
             <Header leftComponent={<Icon name="bars" type="font-awesome" color="#696969" size={25} onPress={()=>{
+              console.log(this.props.navigation);
               this.props.navigation.toggleDrawer();
             }}/>} centerComponent={{
               text:this.props.titles,

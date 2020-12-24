@@ -10,6 +10,7 @@ export default class Settings extends React.Component{
     constructor(){
         super();
         this.state = {
+            userID:firebase.auth().currentUser.email,
             firstname:'',
             lastname:'',
             postalAddress:'',
@@ -24,11 +25,19 @@ export default class Settings extends React.Component{
     userDetails=()=>{
         db
         .collection("users")
-        .update({
-            "firstname":this.state.firstname,
-            "lastname":this.state.lastname,
-            "postalAddress":this.state.postalAddress,
-            "contactNumber":this.state.contactNumber,
+        .where("email","==",this.state.userID)
+        .get()
+        .then((snapshot)=>{
+            console.log(snapshot,"###")
+            snapshot.docs.map((doc)=>{
+                var data = doc.data();
+                this.setState({
+                    firstname:data["firstname"],
+                    lastname:data["lastname"],
+                    postalAddress:data["postalAddress"],
+                    contactNumber:data["contactnumber"]
+                })
+            })
         })
     }
 

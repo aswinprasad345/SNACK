@@ -32,6 +32,7 @@ export default class Donate extends React.Component{
             <View>
                 <AppHeader titles="Donate-Books" navigation={this.props.navigation}/>
                 <FlatList 
+                keyExtractor = {(item,index)=>index.toString()}
                 data = {this.state.requestList}
                 renderItem={({item,i})=>(
                     <ListItem
@@ -45,7 +46,7 @@ export default class Donate extends React.Component{
                     rightElement={
                         <TouchableOpacity style={styles.button} onPress={()=>{
                             console.log('book')
-                            this.props.navigation.navigate('Rec');
+                            this.props.navigation.navigate('Rec',{data:item});
                         }}>
                             <Text style={{color:"white"}}>View</Text>
                         </TouchableOpacity>

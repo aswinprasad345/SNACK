@@ -5,10 +5,16 @@ import Receiver from '../Screens/Receiver.js';
 
 export const StackNav = createStackNavigator({
     Don:{
-        screen:Donate
+        screen:Donate,
+        navigationOptions:{
+            headerShown:false
+        }
     },
     Rec:{
-        screen:Receiver
+        screen:Receiver,
+        navigationOptions:{
+            headerShown:false,
+        }
     }
 },{
     initialRouteName:"Don"
