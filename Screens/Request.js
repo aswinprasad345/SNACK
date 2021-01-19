@@ -13,6 +13,16 @@ export default class Request extends React.Component{
             userID:firebase.auth().currentUser.email,
         }
     }
+    createUniqueID=()=>{
+        var a = Math.random()
+        var b = a.toString(20)
+        var c = b.substring(4)
+        console.log(a,b,c)
+        return Math
+        .random()
+        .toString(36)
+        .substring(7)
+    }
     addRequest=()=>{
         db
         .collection("request")
@@ -20,6 +30,8 @@ export default class Request extends React.Component{
               "fulfilled":false,
               "other":'',
               "reason":this.state.reason,
+              "requestID":this.createUniqueID(),
+              "date":firebase.firestore.FieldValue.serverTimestamp(),
               "userID":this.state.userID
     })
     console.log("************************")

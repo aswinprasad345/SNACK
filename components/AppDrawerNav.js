@@ -4,6 +4,7 @@ import { createDrawerNavigator } from 'react-navigation-drawer';
 import Drawer from './Drawer.js'
 import Settings from '../Screens/settings.js';
 import myDonation from '../Screens/myDonation';
+import Notifications from '../Screens/Notifications';
 import { TabNavigator } from './TabNavigator.js';
 
 export const DrawerNav = createDrawerNavigator({
@@ -13,8 +14,11 @@ export const DrawerNav = createDrawerNavigator({
     Settings:{
         screen:Settings
     },
-    myDon:{
+    MyDonations:{
         screen:myDonation
+    },
+    Notifications:{
+        screen:Notifications
     }
 },{
     contentComponent:Drawer

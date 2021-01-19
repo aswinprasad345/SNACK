@@ -88,6 +88,7 @@ export default class loginScreen extends React.Component{
         .catch((error)=>{
           var errorCode = error.code;
           var errorMessage = error.message;
+          console.log(errorMessage,error)
           return Alert.alert(errorCode+":"+errorMessage)
         })
     }

@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { Text, View, StyleSheet , FlatList } from 'react-native';
+import { Text, View, StyleSheet , TouchableOpacity , FlatList } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import db from '../Config.js';
 import AppHeader from '../components/myHeader';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import firebase from 'firebase';
 
 export default class Donate extends React.Component{
     constructor(){
