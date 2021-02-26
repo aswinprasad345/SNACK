@@ -30,7 +30,9 @@ export default class Nofications extends React.Component{
             console.log(snapshot)
             var temp = []
             snapshot.docs.map((doc)=>{
-                temp.push(doc.data())
+                var tempData = doc.data();
+                tempData["docID"]=doc.id
+                temp.push(tempData)
             })
             this.setState({notificationList:temp});
             console.log(this.state.notificationList)
@@ -39,10 +41,37 @@ export default class Nofications extends React.Component{
     
     render(){
         return(
-            <View>
+            <View style={styles.cointainer}>
+                <View style = {{
+                    flex : 0.1
+                }}>
                 <AppHeader titles="Notifications" navigation={this.props.navigation}/>
-                <SwipeableFlatList nofications = {this.state.notificationList}/>
+                </View>
+                <View style = {{
+                    flex :0.9
+                }}>
+                {(
+                    this.state.notificationList.length == 0
+                )?(<View style = {{
+                    flex:1,
+                    justifyContent:"center",
+                    alignItems:"center",
+                }}>
+                        <Text style={{
+                            fontSize:25,
+                        }}>No Notification</Text>
+                    </View>
+                ):(
+                    <SwipeableFlatList notifications = {this.state.notificationList}/>
+                )}    
+                </View>
             </View>
         )
     }
 }
+
+const styles = StyleSheet.create({ 
+    container : { 
+        flex : 1 
+    } 
+})

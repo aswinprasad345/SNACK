@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Text , View , StyleSheet } from 'react-native';
-import Notifications from '../Screens/Notifications';
 import { Header , Icon , Badge } from 'react-native-elements';
 import db from '../Config.js';
 import firebase from 'firebase';

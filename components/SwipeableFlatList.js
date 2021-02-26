@@ -3,7 +3,8 @@ import { Text, View, StyleSheet , TextInput } from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import firebase from 'firebase';
 import { Dimensions , Animated } from 'react-native';
-import { ListItem } from 'react-native-elements';
+import { ListItem , Icon } from 'react-native-elements';
+import db from '../Config.js';
 
 export default class SwipeableFlatList extends React.Component{
     constructor(props){
@@ -12,6 +13,9 @@ export default class SwipeableFlatList extends React.Component{
             allNotifications : this.props.notifications,
             userID : firebase.auth().currentUser.email,
         }
+    }
+    componentDidMount(){
+        console.log(this.state.allNotifications)
     }
     render(){
         return(
@@ -32,10 +36,11 @@ export default class SwipeableFlatList extends React.Component{
         )
     }
     renderItem=(data)=>{
+        console.log(data);
         return(
             <Animated.View>
                 <ListItem
-                    title = {data.item["bookName"]}
+                    title = {data["item"]["bookName"]}
                     subtitle = {data.item["message"]}
                     titleStyle = {{
                         color:"black",
@@ -57,8 +62,24 @@ export default class SwipeableFlatList extends React.Component{
         )
     }
     onSwipeValueChange=(data)=>{
-        const key = data;
-        console.log(key);
+        const {key,value} = data;
+        if(value < -Dimensions.get("window").width){
+            const newData = [...this.state.allNotifications]
+            this.updateMarkAsRead(this.state.allNotifications[key]);
+            newData.splice(key,1);
+            this.setState({
+                allNotifications:newData
+            })
+        }
+    }
+    updateMarkAsRead=(data)=>{
+        console.log(data)
+        db
+        .collection("notifications")
+        .doc(data["docID"])
+        .update({
+            'notificationStatus':"read"
+        })
     }
 }
 

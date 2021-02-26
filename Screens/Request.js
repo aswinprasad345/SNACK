@@ -8,10 +8,54 @@ export default class Request extends React.Component{
     constructor(){
         super();
         this.state = {
+            bookRequestActive:false,
+            firstname : '',
+            lastname : '',
+            requestID:'',
             book:'',
             reason:'',
+            status : '',
+            docID : '',
+            donorID : '',
             userID:firebase.auth().currentUser.email,
         }
+    }
+    componentDidMount(){
+        this.getBookRequest();
+        this.getBookRequestActive();
+    }
+    getBookRequest=()=>{
+        db
+        .collection("request")
+        .where("userID","==",this.state.userID)
+        .where("status","==","requested")
+        .onSnapshot((snapshot)=>{
+            console.log(snapshot.docs.length,"@@",this.state.userID);
+            snapshot.docs.map((doc)=>{
+                var docData = doc.data();
+                console.log(doc["id"]);
+                this.setState({
+                    book :  docData["book name"],
+                    reason : docData["reason"],
+                    status : docData["status"],
+                    requestID : docData["requestID"],
+                    docID : doc["id"]
+                })
+            })
+        })
+    }
+    getBookRequestActive=()=>{
+        db
+        .collection("users")
+        .where("email","==",this.state.userID)
+        .get()
+        .then((docList)=>{
+            docList.docs.map((doc)=>{
+                var docData = doc.data();
+                this.setState({ bookRequestActive : docData["bookRequestActive"] })
+            })
+            console.log(this.state.bookRequestActive);
+        })
     }
     createUniqueID=()=>{
         var a = Math.random()
@@ -31,30 +75,140 @@ export default class Request extends React.Component{
               "other":'',
               "reason":this.state.reason,
               "requestID":this.createUniqueID(),
+              "status":"requested",
               "date":firebase.firestore.FieldValue.serverTimestamp(),
               "userID":this.state.userID
-    })
-    console.log("************************")
+        })
+        db
+        .collection("users")
+        .where("email","==",this.state.userID)
+        .get()
+        .then((snapshot)=>{
+            snapshot.docs.map((doc)=>{
+                var docID = doc["id"]
+                db
+                .collection("users")
+                .doc(docID)
+                .update({
+                    bookRequestActive : true
+                })
+            })
+        })
+        this.setState({ bookRequestActive : true })
+    }
+    updateBookRequestStatus=()=>{
+        db
+        .collection("request")
+        .doc(this.state.docID)
+        .update({
+            "fulfilled":true,
+            "status" : "received",
+        })
+        db
+        .collection("users")
+        .where("email","==",this.state.userID)
+        .get()
+        .then((snapshot)=>{
+            snapshot.docs.map((doc)=>{
+                var docID = doc["id"];
+                db
+                .collection("users")
+                .doc(docID)
+                .update({
+                    "bookRequestActive" : false,
+                })
+            })
+        })
+    }
+    sentNotifications=()=>{
+        db
+        .collection("users")
+        .where("email","==",this.state.userID)
+        .get()
+        .then((temp)=>{
+            temp.docs.map((doc)=>{
+                var docID = doc["id"];
+                this.setState({
+                    firstname : doc.data()["firstname"],
+                    lastname : doc.data()["lastname"]
+                })
+                db
+                .collection("notifications")
+                .where("requestID","==",this.state.requestID)
+                .get()
+                .then((docList)=>{
+                    docList.docs.map((doc)=>{
+                        this.setState({ 
+                            donorID : doc.data()["donorID"],
+                            book : doc.data()["bookName"]
+                        })
+                        db
+                        .collection("notification")
+                        .add({
+                            bookName : this.state.book,
+                            date : firebase.firestore.FieldValue.serverTimestamp(),
+                            donorID : this.state.donorID,
+                            message : this.state.firstname + this.state.lastname + "received the " + this.state.book,
+                            notificationStatus : "unread",
+                            requestID : this.state.requestID,
+                            targetUserID : this.state.donorID,
+                        })
+                    })
+                })
+
+            })
+        })
     }
     render(){
-        return(
-            <View style={{
-                flex:1
-            }}>
-                <AppHeader titles="Request-Books" navigation={this.props.navigation}/>
-                <KeyboardAvoidingView style={styles.keyBoardStyle}>
-                    <TextInput placeholder="book" value={this.state.book} onChangeText={(text)=>{
-                        this.setState({book:text})
-                    }} style={styles.formTextInput}/>
-                    <TextInput placeholder="reason" value={this.state.reason} onChangeText={(text)=>{
-                        this.setState({reason:text})
-                    }} style={styles.formTextInput}/>
-                    <TouchableOpacity style={styles.button} onPress={this.addRequest}>
-                        <Text>Request</Text>
-                    </TouchableOpacity>
-                </KeyboardAvoidingView>
-            </View>
-        )
+        if(this.state.bookRequestActive == false){
+            return(
+                <View style={{
+                    flex:1
+                }}>
+                    <AppHeader titles="Request-Books" navigation={this.props.navigation}/>
+                    <KeyboardAvoidingView style={styles.keyBoardStyle}>
+                        <TextInput placeholder="book" value={this.state.book} onChangeText={(text)=>{
+                            this.setState({book:text})
+                        }} style={styles.formTextInput}/>
+                        <TextInput placeholder="reason" value={this.state.reason} onChangeText={(text)=>{
+                            this.setState({reason:text})
+                        }} style={styles.formTextInput}/>
+                        <TouchableOpacity style={styles.button} onPress={this.addRequest}>
+                            <Text>Request</Text>
+                        </TouchableOpacity>
+                    </KeyboardAvoidingView>
+                </View>
+            )
+        }
+        else{
+            return(
+                <View style={{
+                    flex : 0.1
+                }}>
+                    <AppHeader titles="Book-Status" navigation={this.props.navigation}/>
+                    <View>
+                        <Text style={styles.buttonText}>Name of the Book :</Text>
+                        <Text style={styles.buttonText}>{this.state.book}</Text>
+                    </View>
+                    <View>
+                        <Text style={styles.buttonText}>Status :</Text>
+                        <Text style={styles.buttonText}>{this.state.status}</Text>
+                    </View>
+                    <View>
+                        <TouchableOpacity style = {styles.button} onPress={(()=>{
+                            this.updateBookRequestStatus();
+                            this.setState({
+                                bookRequestActive : false,
+                                book : '',
+                                reason : '',
+                            })
+                        })}>
+                            <Text style={styles.buttonText}>Book-Received</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            )
+        }
     }
 }
 
@@ -89,5 +243,10 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.44, 
         shadowRadius: 10.32, 
         elevation: 16, 
-        marginTop:20 }, 
-    })
+        marginTop:20 
+    },
+    buttonText : {
+        textAlign : 'center',
+        color : 'black'
+    },         
+})

@@ -81,7 +81,8 @@ export default class loginScreen extends React.Component{
             "postalAddress":this.state.postalAddress,
             "email":this.state.email,
             "password":this.state.password,
-            "confirmPassword":this.state.confirmPassword
+            "confirmPassword":this.state.confirmPassword,
+            "bookRequestActive":false
           })
           return Alert.alert("User added successfully","User will be directed to the login screen",[{text:"ok",onPress:()=>this.setState({modalVisible:false})}])
         })
@@ -121,7 +122,7 @@ export default class loginScreen extends React.Component{
  render(){
     return(
         <View style={styles.container}>
-          {/* {this.showModal()} */}
+          {this.showModal()}
           {/* <View>
             <SantaView/>
           </View> */}
